@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--开启注解的扫描需要添加以上名称空间-->
+
+    <!--问题是： 怎么让当前的配置文件被加载呢？因此就需要在web.xml中对该配置文件进行配置-->
+
+    <!--开启注解扫描，那么我们在该模块定义的HelloContoller 这个类就可以被扫到了，但是要在该类上添加一个注解@Controller，然后该类就被添加到spring IOC容器中了-->
+    <context:component-scan base-package="com.kay"/>
+
+    <!--视图解析器对象--><!--视图解析器的类名是固定的：org.springframework.web.servlet.view.InternalResourceViewResolve-->
+    <bean id="internalResourceViewResolve" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"></property><!--prefix指定包的名字-->
+        <property name="suffix" value=".jsp"></property><!--suffix指定文件的扩展名-->
+    </bean>
+
+    <!--配置前端控制器，哪些静态资源不拦截-->
+    <mvc:resources mapping="/js/**" location="/js/**"/><!--mapping后面的**以后js这么目录下的任何一个文件都不会拦截，location后面的**表示js目录下的所有文件-->
+    <mvc:resources mapping="/images/**" location="/images/**"/>
+    <mvc:resources mapping="/css/**" location="/css/**"/>
+
+    <!--开启SpringMVC框架注解的支持-->
+    <mvc:annotation-driven /><!--只需要把这个标签配置上就可以开启注解的支持-->
+
+</beans>
