@@ -1,0 +1,75 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class><!--DispathcherServlet类什么时候创建，当第一次发请求的时候创建。
+    DispatcherServlet是一个前端控制器类
+    -->
+    <!--提供一个全局的初始化参数-->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc.xml</param-value><!--DispatcherServlet这各类可以帮助我们加载springmvc.xml配置文件-->
+    </init-param>
+    <load-on-startup>1</load-on-startup><!--以后启动服务器就可以创建DispathcherServletl这个对象-->
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <!--配置解决中文乱码的过滤器--><!--通过过滤器实现-->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class><!--Spring框架为我们提供的字符转换的类-->
+    <init-param><!--提供初始化参数-->
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern><!--拦截所有-->
+  </filter-mapping>
+</web-app>
+
+
+        <!--
+               1.启动服务器，加载一些配置文件
+                   1）DispatcherServlet对被创建
+                   2）springmvc.xml被加载了
+                   3) HelloController创建成为对象
+
+           -->
+
+<!--
+  DispatcherServlet前端控制器：
+    用户的请求到达前端控制器，它就相当于mvc模式中的C。DispatcherServlet是整个流程的控制中心，由它调用其他组件处理用户的请求，DispatcherServlet的存在降低了组件间的耦合性。
+  HandlerMapping处理映射器：
+    HandlerMapping负责根据用户请求找到Hander及处理器，SpringMVC提供了不同的映射实现不同的映射方式，例如：配置文件的方式，实现接口方式，注解方式等。
+  Hander处理器：
+    它就是我们开发中具体要写的业务控制器，由DispatcherServlet把用户的具体请求转发到Handler,由Hanler对具体的用户的请求进行处理
+  HandlAdapter处理适配器：
+    通过HandlAdapter对处理器进行执行，这就是适配器模式的应用，通过扩展适配器，可以对更多类型的处理器进行执行
+  View Resolver视图解析器：
+    View Resolver负责处理结果生成View视图，View Resolver首先根据逻辑视图名解析称物理视图名，及具体的的物理页面地址，再生成view视图对象，最后对View进行渲染处理结果通过页面展示给用户
+  View视图：
+    SpringMVC框架提供了更多的View视图类型文档的支持，包括：jstView,freemarkerView,pdfView等，我们最长用的就是jsp。
+    一般情况下需要通过页面的标签模板技术iang模型数据通过页面展示给用户，需要由程序员根据业务需求开发具体的页面
+  <mvc:annotation-driver>说明：
+    在SpringMVC的各个组件中，处理器映射器、处理器适配器、视图解析器称为SpringMVC 的三大组件。
+    使用 <mvc:annotation-driver>自动加载 RequestMappingHandlerMapping(处理映射器) 和RequestMappingHandlerAdapter（处理适配器）
+    ，可用在SpringMVC.xml配置文件中使用 <mvc:annotation-driver>替代注解处理器和适配器的配置。
+
+
+
+
+  SpringMVC框架是基于组件的方式执行流程的（例如：前端控制器、处理映射器、处理器适配器、视图解析器）；
+    发送一个请求首先到达前端控制器（DispatcherServlet）（前端控制器是一个指挥中心），然后前端控制器再去找处理器映射器（Handlermapping），
+    处理器映射器然后就做一些处理（让Controller类中方法去执行 /hello）,然后处理器映射器象前端控制器返回执行链（也就是HelloController中的sayHello()方法）
+
+
+-->

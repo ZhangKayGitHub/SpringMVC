@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--开启注解的扫描需要添加以上名称空间-->
+
+    <!--问题是： 怎么让当前的配置文件被加载呢？因此就需要在web.xml中对该配置文件进行配置-->
+
+    <!--开启注解扫描，那么我们在该模块定义的HelloContoller 这个类就可以被扫到了，但是要在该类上添加一个注解@Controller，然后该类就被添加到spring IOC容器中了-->
+    <context:component-scan base-package="com.kay"/>
+
+    <!--视图解析器对象--><!--视图解析器的类名是固定的：org.springframework.web.servlet.view.InternalResourceViewResolve-->
+    <bean id="internalResourceViewResolve" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/"></property><!--prefix指定包的名字-->
+        <property name="suffix" value=".jsp"></property><!--suffix指定文件的扩展名-->
+    </bean>
+    <!--配置自定义类型转换器-->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <!--把我们自己写的类型转换器也在-->
+        <property name="converters">
+            <set>
+                <bean class="com.kay.utils.StringToDateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+
+
+    <!--开启SpringMVC框架注解的支持--><!--mvc标签中的annotation-driven属性默认会将适配器、处理器映射器生效，但是类型转化器就不会被默认生效，
+    为了让上边的自定义的类型转换器生效，就需要在下边的mvc标签中添加 conversion-service="conversionService"属性，让类型转换器生效-->
+    <mvc:annotation-driven conversion-service="conversionService"/><!--只需要把这个标签配置上就可以开启注解的支持-->
+
+
+
+
+    <!--在控制器中使用原生的ServletAPI对象：
+    1.只需要在控制器的方法参数定义HttpServletRequest和HttpServletResponse对象-->
+
+
+
+
+
+
+
+
+
+
+
+</beans>
