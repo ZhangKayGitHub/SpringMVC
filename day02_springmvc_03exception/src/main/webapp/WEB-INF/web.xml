@@ -1,0 +1,40 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class><!--DispathcherServlet类什么时候创建，当第一次发请求的时候创建。
+    DispatcherServlet是一个前端控制器类
+    -->
+    <!--提供一个全局的初始化参数-->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc.xml</param-value><!--DispatcherServlet这各类可以帮助我们加载springmvc.xml配置文件-->
+    </init-param>
+    <load-on-startup>1</load-on-startup><!--以后启动服务器就可以创建DispathcherServletl这个对象-->
+
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+  <!--配置解决中文乱码的过滤器--><!--通过过滤器实现-->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class><!--Spring框架为我们提供的字符转换的类-->
+    <init-param><!--提供初始化参数-->
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern><!--拦截所有-->
+  </filter-mapping>
+
+</web-app>
